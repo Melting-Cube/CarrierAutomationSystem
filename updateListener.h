@@ -7,6 +7,7 @@
 #define UPDATELISTENER_H
 
 
+#include <json/value.h>
 #include <string>
 #include "lib/efsw/include/efsw/efsw.hpp"
 #include "jsonParse.h"
@@ -17,16 +18,13 @@ class UpdateListener : public efsw::FileWatchListener
     std::string filename;
     std::string filepath;
     JsonParse jsonParse;
+    Json::Value event;
 
   public:
     UpdateListener(std::string filepath) : filepath(filepath) {}
     void handleFileAction( efsw::WatchID watchid, const std::string& dir, const std::string& filename, efsw::Action action, std::string oldFilename );
 
     void handleJournalEvent();
-
-    
-
-
 };
 
 #endif

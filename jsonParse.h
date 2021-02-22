@@ -9,6 +9,7 @@
 
 #include <string>
 #include <fstream>
+#include <json/value.h>
 
 class JsonParse
 {
@@ -20,7 +21,7 @@ class JsonParse
     ~JsonParse(){ fin.close(); }
 
     void openJson(std::string filename, std::string filepath);
-    void readJson();
+    void readJson(Json::Value* event);
 
     bool isFileOpen();
     void closeFile();

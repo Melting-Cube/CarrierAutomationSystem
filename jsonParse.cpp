@@ -4,9 +4,12 @@
  ***************************************************************/
 
 #include "jsonParse.h"
+#include <X11/X.h>
 #include <fstream>
 #include <ios>
 #include <iostream>
+#include <json/json.h>
+#include <json/reader.h>
 #include <json/value.h>
 #include <ostream>
 #include <string>
@@ -28,7 +31,7 @@ void JsonParse :: openJson(std::string filename, std::string filepath)
 /************************************************************************
  * Is read the last line of the file
  ************************************************************************/
-void JsonParse :: readJson()
+void JsonParse :: readJson(Json::Value* event)
 {
     // go to one spot before the EOF
     if(fin.is_open()) {
@@ -52,10 +55,35 @@ void JsonParse :: readJson()
             }
         }
 
-        Json::Value event;
+        //make objects to read the line as json
+        Json::CharReaderBuilder builder;
+        Json::CharReader * reader = builder.newCharReader();
+        std::string errors;
+
         std::string lastLine;
-        getline(fin,lastLine); 
-        std::cout << "Result: " << lastLine << '\n';
+        getline(fin,lastLine);
+
+        //parse the lines
+        bool parsingSuccessful =
+            reader->parse(lastLine.c_str(), lastLine.c_str() + lastLine.size(), event, &errors );
+        
+        //delete the reader object
+        delete reader;
+
+        //did succede?
+        if(!parsingSuccessful)
+        {
+            std::cout << lastLine << std::endl << errors << std::endl;
+        }
+        else {
+            std::cout << "\n\n" << event->get("event", false) << "\n\n\n\n";
+            // std::cout << ;
+        }
+
+
+
+        // std::cout << "Result: " << lastLine << '\n';
+
     }
     return;
 }
