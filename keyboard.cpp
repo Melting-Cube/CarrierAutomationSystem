@@ -8,6 +8,7 @@
 #include <X11/X.h>
 #include <cstring>
 #include <iostream>
+#include <unistd.h>
 #include <xdo.h>
 
 /***************************************************************
@@ -70,5 +71,17 @@ void Keyboard :: waitForWindow()
 void Keyboard :: focusWindow()
 {
    xdo_focus_window(x, window[0]);
+   return;
+}
+
+/***************************************************************
+ * Function: holdKey
+ * Description: hold key for x time
+ ***************************************************************/
+void Keyboard :: holdKey(const std::string key, const int time)
+{
+   xdo_send_keysequence_window_down(x, window[0], key.c_str(), 12000);
+   sleep(time);
+   xdo_send_keysequence_window_up(x, window[0], key.c_str(), 12000);
    return;
 }

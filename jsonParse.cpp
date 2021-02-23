@@ -31,7 +31,7 @@ void JsonParse :: openJson(std::string filename, std::string filepath)
 /************************************************************************
  * Is read the last line of the file
  ************************************************************************/
-void JsonParse :: readJson(Json::Value* event)
+int JsonParse :: readJson(Json::Value* event)
 {
     // go to one spot before the EOF
     if(fin.is_open()) {
@@ -73,19 +73,16 @@ void JsonParse :: readJson(Json::Value* event)
         //did succede?
         if(!parsingSuccessful)
         {
-            std::cout << lastLine << std::endl << errors << std::endl;
+            // std::cout << lastLine << std::endl << errors << std::endl;
+            return 1;
         }
-        else {
-            std::cout << "\n\n" << event->get("event", false) << "\n\n\n\n";
+            // std::cout << "\n\n" << event->get("event", false) << "\n\n\n\n";
             // std::cout << ;
-        }
-
-
 
         // std::cout << "Result: " << lastLine << '\n';
 
     }
-    return;
+    return 0;
 }
 
 /************************************************************************

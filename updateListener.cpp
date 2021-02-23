@@ -7,6 +7,7 @@
 #include "updateListener.h"
 #include <iostream>
 #include <unistd.h>
+#include <stdlib.h>
 #include "jsonParse.h"
 #include "lib/efsw/include/efsw/efsw.hpp"
 
@@ -39,5 +40,33 @@ void UpdateListener :: handleFileAction( efsw::WatchID watchid, const std::strin
 void UpdateListener :: handleJournalEvent()
 {
     jsonParse.readJson(&event);
+
+    //look for a match that means something
+    if (event.get("event", false) == "CarrierJumpRequest")
+    {
+        std::cout << "\njump request made "
+                  << event.get("Body", "\"oof, dis is fucked\"").asString()
+                  << std::endl;
+        fuelInstructions.runInstructions();
+    }
+    else if (event.get("event", false) == "CarrierJump")
+    {
+        event.get("StarSystem", "M O N K E").asString();
+        sleep(rand() % 3 + 5);
+        inputInstructions.runInstructions();
+    }
+    else if (event.get("event", false) == "CarrierStats")
+    {
+        fuelInstructions.setFuelLevel(event.get("FuelLevel", 1000).asInt());
+    }
+    else if (event.get("event", false) == "Loadout")
+    {
+        std::cout << event.get("CargoCapacity", 0).asInt();
+        fuelInstructions.setCargoSize(event.get("CargoCapacity", 0).asInt());
+        inputInstructions.runInstructions();
+    }
+    
+
+
     return;
 }

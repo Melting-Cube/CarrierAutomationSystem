@@ -38,6 +38,7 @@ class Keyboard
     void type(std::string phrase);
     void waitForWindow();
     void focusWindow();
+    void holdKey(const std::string key, const int time);
 
 };
 

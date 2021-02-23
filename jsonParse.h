@@ -21,7 +21,7 @@ class JsonParse
     ~JsonParse(){ fin.close(); }
 
     void openJson(std::string filename, std::string filepath);
-    void readJson(Json::Value* event);
+    int readJson(Json::Value* event);
 
     bool isFileOpen();
     void closeFile();

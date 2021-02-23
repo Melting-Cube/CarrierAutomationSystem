@@ -37,6 +37,7 @@ class ReadInstructions
 
     // other public methods
     std::string getInstructionPath() const { return instructionPath; }
+    void runInstructions();
 
     void displayInstructions();
 

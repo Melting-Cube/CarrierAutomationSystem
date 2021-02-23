@@ -15,8 +15,8 @@ LIBS = /home/brandon/Documents/cpp-projects/carrierJump/lib/efsw/lib/libefsw-deb
 ###############################################################
 # Build the main program
 ###############################################################
-CarrierAutomationSystem.L: CarrierAutomationSystem.o readInstructions.o keyboard.o systemList.o inputInstructions.o updateListener.o jsonParse.o
-	g++ CarrierAutomationSystem.o readInstructions.o keyboard.o systemList.o inputInstructions.o updateListener.o jsonParse.o $(LFLAGS) -o CarrierAutomationSystem.l $(LIBS)
+CarrierAutomationSystem.L: CarrierAutomationSystem.o readInstructions.o keyboard.o systemList.o inputInstructions.o updateListener.o jsonParse.o fuelInstructions.o
+	g++ CarrierAutomationSystem.o readInstructions.o keyboard.o systemList.o inputInstructions.o updateListener.o jsonParse.o fuelInstructions.o $(LFLAGS) -o CarrierAutomationSystem.l $(LIBS)
 	tar -j -cf CarrierAutomationSystem.tar makefile *.h *.cpp *.csv
 	make clean
 
@@ -28,6 +28,9 @@ systemList.o: systemList.cpp systemList.h readInstructions.h
 
 inputInstructions.o: inputInstructions.cpp inputInstructions.h readInstructions.h keyboard.h
 	g++ -c inputInstructions.cpp
+
+fuelInstructions.o: fuelInstructions.cpp fuelInstructions.h readInstructions.h keyboard.h
+	g++ -c fuelInstructions.cpp
 
 readInstructions.o: readInstructions.cpp readInstructions.h
 	g++ -c readInstructions.cpp
@@ -41,7 +44,7 @@ jsonParse.o: jsonParse.cpp jsonParse.h
 updateListener.o: updateListener.cpp updateListener.h
 	g++ -c updateListener.cpp
 
-CarrierAutomationSystem.o: CarrierAutomationSystem.cpp systemList.h inputInstructions.h
+CarrierAutomationSystem.o: CarrierAutomationSystem.cpp systemList.h inputInstructions.h fuelInstructions.h
 	g++ -c CarrierAutomationSystem.cpp
 
 ###############################################################

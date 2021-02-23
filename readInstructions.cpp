@@ -5,6 +5,7 @@
  ***************************************************************/
 
 #include "readInstructions.h"
+#include "keyboard.h"
 #include <fstream>
 #include <iostream>
 #include <ostream>
@@ -22,14 +23,10 @@ std::vector<std::vector<std::string>> ReadInstructions :: parseInstructions()
       std::cout << "file could not be opened, aborting.";
       exit(1);
    }
-   std::cout << "file open\n";
       
    // set variables for properly reading csv
    std::string line, word, temp;
    std::vector<std::vector<std::string>> csv;
-
-   // fin >> temp;
-   // std::cout << temp;
 
    // read the csv
    for (int i = 0; !fin.eof(); i++) {
@@ -89,4 +86,45 @@ std::string ReadInstructions :: trim(std::string text, char cut)
      text.erase(text.length() - 1, 1);
    }
    return text;
+}
+
+/***************************************************************
+ * Function: runinstructions()
+ * Description: runs the instructions provided in the csv
+ ***************************************************************/
+void ReadInstructions :: runInstructions()
+{
+   //make keyboard object to be able to run cmd
+   Keyboard key;
+
+   // make vars
+   std::string condition;
+   std::string action;
+
+   //focuses the right window 
+   key.focusWindow();
+            
+   // go through every row 
+   for (int i = 0; i < csv.size(); i++)
+   {
+      condition = csv.at(i).at(0);
+      action = csv.at(i).at(1);
+
+      if (condition == "pressKey")
+      {
+         key.waitForWindow();
+         key.pressKey(action);
+      }
+      else if (condition == "time")
+         sleep(std::stoi(action));
+      else if (condition == "type")
+      {
+         key.waitForWindow();
+         key.type(action);
+      }
+      
+      //defalut delay to have between instruction press
+      sleep(delay);
+   }
+   return;
 }

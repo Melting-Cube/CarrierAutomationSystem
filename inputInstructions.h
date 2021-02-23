@@ -9,17 +9,18 @@
 
 #include "readInstructions.h"
 #include "systemList.h"
+#include <string>
 
 class InputInstructions : public ReadInstructions
 {
   private:
     int jumpsCompleted;
-    SystemList *sysList;
+    SystemList sysList;
 
   public:
-    InputInstructions(SystemList *sysList) : sysList(sysList) {jumpsCompleted = 0;}
-    InputInstructions(std::string instructionPath) : ReadInstructions(instructionPath) 
-      {jumpsCompleted = 0;}
+    InputInstructions(std::string *sysListPath)
+    : sysList(*sysListPath)
+    , jumpsCompleted(0) {}
 
     void runInstructions();
 
