@@ -11,26 +11,102 @@
 
 #include "inputInstructions.h"
 #include "readInstructions.h"
+#include <cctype>
+#include <cstdio>
 #include <iostream>
+#include <istream>
 #include <ostream>
+#include <stdexcept>
 #include <string>
+#include <tuple>
 #include <unistd.h>
 // #include <stdio.h>
-#include "systemList.h"
+#include <sstream>
 #include "updateListener.h"
-#include "jsonParse.h"
 
 /**********************************************************************
- * 
+ * gets the jump path for the user
  ***********************************************************************/
-void callUpdateListener(){
+void getJumpPath(std::string* jumpPath)
+{
+   std::cout << "Please enter your full file path to the spansh csv:\n";
+   do {
+   getline(std::cin, *jumpPath);
+   } while(!jumpPath->size());
+
+   //trim whitspace
+   while( !jumpPath->empty() && std::isspace( jumpPath->back() ) ) jumpPath->pop_back();
+   while( !jumpPath->empty() && std::isspace( jumpPath->front() ) ) jumpPath->erase(jumpPath->begin());
+   
+   std::cout << *jumpPath;
+   return;
+}
+
+/**********************************************************************
+ * gets the amout of commodities in user carrier
+ ***********************************************************************/
+int getCommodities()
+{
+   std::string option;
+   int commodities = 0;
+
+   while (true) 
+   {
+      std::cout << "Enable automatic refuel? Y/N: ";
+      std::cin >> option;
+      std::cin.clear();
+
+      //they want the aut refill
+      if (tolower(option.at(0)) == 'y')
+      {
+         // get number of commodities on carrier
+         std::cout << "Please enter the number of unique commodities stored in your carrier: ";
+         while (!(std::cin >> commodities))
+         {
+            std::cin.clear();
+            std::cin.ignore(256, '\n');
+            std::cout << "Wrong input. Please enter an integer: ";
+         }
+
+         //warn them to put trit in cargo
+         std::cout << "refuel will only work if you have at lease one tritium in your cargo,/n"
+                   << "please set that up and press enter when ready./n";
+         std::cin.ignore();
+
+         return commodities;
+      
+      }
+
+      //if they do not want automatic refuel
+      else if (tolower(option.at(0) == 'n'))
+      {
+         return 0;
+      }
+   }
+   return commodities;
+}
+
+/**********************************************************************
+ * reload the game, this starts everything
+ ***********************************************************************/
+void reloadGame(){
+   ReadInstructions reload("./reloadGame.csv");
+   reload.runInstructions();
+
+   return;
+}
+
+/**********************************************************************
+ * call the journal update listener and watch game events
+ ***********************************************************************/
+void callUpdateListener(std::string* sysListPath, const int commodities){
    // Create the file system watcher instance
    // efsw::FileWatcher allow a first boolean parameter that indicates if it should start with the generic file watcher instead of the platform specific backend
    efsw::FileWatcher * fileWatcher = new efsw::FileWatcher();
    std::string filepath = "/home/brandon/.local/share/Steam/steamapps/compatdata/359320/pfx/drive_c/users/steamuser/Saved Games/Frontier Developments/Elite Dangerous/";
 
    // Create the instance of your efsw::FileWatcherListener implementation
-   UpdateListener * listener = new UpdateListener(filepath);
+   UpdateListener * listener = new UpdateListener(filepath, sysListPath, -1, commodities);
 
    efsw::WatchID watchID = fileWatcher->addWatch( filepath, listener, true );
 
@@ -48,17 +124,14 @@ void callUpdateListener(){
 int main()
 {
 
-   //SystemList sysList("../../../Downloads/fleet-carrier-San Tu-HIP 54597-405AA34E-711A-11EB-8498-0FD994EB4526.csv");
-   // InputInstructions run(&sysList);
+   std::string jumpPath;
+   getJumpPath(&jumpPath);
+   int commodities = getCommodities();
 
-   // std::cout << run.getInstructionPath() << std::endl;
+   
+   callUpdateListener(&jumpPath, commodities);
 
-   callUpdateListener();
-
-   // sysList.displayInstructions();
-
-   // run.runInstructions();
-   // system("cmd_output=`xdotool search --name \"Elite - Dangerous\"` && xdotool windowfocus $cmd_output");
+   reloadGame();
 
    //end this program anytime by typing end
    std::cout << "end this program anytime by typing end\n";
