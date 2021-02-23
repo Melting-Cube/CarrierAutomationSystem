@@ -38,7 +38,7 @@ void getJumpPath(std::string* jumpPath)
    while( !jumpPath->empty() && std::isspace( jumpPath->back() ) ) jumpPath->pop_back();
    while( !jumpPath->empty() && std::isspace( jumpPath->front() ) ) jumpPath->erase(jumpPath->begin());
    
-   std::cout << *jumpPath;
+
    return;
 }
 
@@ -69,8 +69,8 @@ int getCommodities()
          }
 
          //warn them to put trit in cargo
-         std::cout << "refuel will only work if you have at lease one tritium in your cargo,/n"
-                   << "please set that up and press enter when ready./n";
+         std::cout << "refuel will only work if you have at lease one tritium in your cargo,\n"
+                   << "please set that up and press enter when ready.\n";
          std::cin.ignore();
 
          return commodities;
