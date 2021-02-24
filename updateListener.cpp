@@ -42,21 +42,26 @@ void UpdateListener :: handleJournalEvent()
 {
     jsonParse.readJson(&event);
 
+    // std::cout << event.get("event", "error").asString() << std::endl;
     //look for a match that means something
-    if (event.get("event", "error").asString() == "CarrierJump")
+    if (event.get("event", "error") == "CarrierJump")
     {
         std::cout << "New System:\t" << event.get("StarSystem", "M O N K E").asString() << std::endl;
         sleep((rand() % 3 + 5) * 60);
         inputInstructions.runInstructions();
         fuelInstructions.runInstructions();
     }
-    else if (event.get("event", "error").asString() == "Loadout")
+    else if (event.get("event", "error") == "Loadout")
     {
         fuelInstructions.setCargoSize(event.get("CargoCapacity", 0).asInt());
         inputInstructions.runInstructions();
         fuelInstructions.runInstructions();
+    }  
+    else if (event.get("event", "error") == "Statistics")
+    {
+        ReadInstructions reload("./reloadGame.csv");
+        reload.runInstructions();
     }
-    
 
 
     return;

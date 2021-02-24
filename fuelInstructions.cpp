@@ -38,7 +38,7 @@ void FuelInstructions :: runInstructions()
 
    //if there needs to be multiple trips
    int rounds = ceil(((float)1000 - (float)fuelLevel) / ((float)cargoSize - (float)1));
-   for (int i = 0; i < rounds || i < 10; i++)
+   for (int i = 0; i < rounds || i < 2; i++)
    {
       // go through every row 
       for (int i = 0; i < csv.size(); i++)
