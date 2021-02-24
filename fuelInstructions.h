@@ -13,34 +13,37 @@
 class FuelInstructions : public ReadInstructions
 {
   private:
-    int fuelLevel;
+    const int fuelLevel;
     int cargoSize;
     int commodities;
 
   public:
     FuelInstructions(int commodities)
     : ReadInstructions("fuelInstructions.csv")
+    , fuelLevel(844)
     , cargoSize(0)
     , commodities(commodities) {}
 
     FuelInstructions(int commodities, int cargoSize)
     : ReadInstructions("fuelInstructions.csv")
+    , fuelLevel(844)
     , cargoSize(cargoSize)
     , commodities(commodities) {}
 
     FuelInstructions(int commodities, std::string instructionPath)
     : ReadInstructions(instructionPath)
+    , fuelLevel(844)
     , cargoSize(0)
     , commodities(commodities) {}
 
     FuelInstructions(int commodities, std::string instructionPath, int cargoSize)
     : ReadInstructions(instructionPath)
+    , fuelLevel(844)
     , cargoSize(cargoSize)
     , commodities(commodities) {}
 
     void runInstructions();
 
-    void setFuelLevel(const int fuelLevel);
     int getFuelLevel() { return fuelLevel; }
     void setCargoSize(const int cargoSize);
     int getCargoSize() { return cargoSize; }

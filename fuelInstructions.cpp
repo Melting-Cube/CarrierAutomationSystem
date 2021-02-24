@@ -38,7 +38,7 @@ void FuelInstructions :: runInstructions()
 
    //if there needs to be multiple trips
    int rounds = ceil(((float)1000 - (float)fuelLevel) / ((float)cargoSize - (float)1));
-   for (int i = 0; i < rounds; i++)
+   for (int i = 0; i < rounds || i < 10; i++)
    {
       // go through every row 
       for (int i = 0; i < csv.size(); i++)
@@ -71,24 +71,15 @@ void FuelInstructions :: runInstructions()
          }
          else if (condition == "notEnough")
          {
-            if (cargoSize <= 1000 - fuelLevel)
-               key.pressKey(action);
+            key.pressKey(action);
+            // if (cargoSize <= 1000 - fuelLevel)
+            //    key.pressKey(action);
          }
       
          //defalut delay to have between instruction press
          sleep(delay);
       }
    }
-   return;
-}
-
-/***************************************************************
- * Function: setFuelLevel
- * Description: sets the fuel level
- ***************************************************************/
-void FuelInstructions :: setFuelLevel(const int fuelLevel)
-{
-   this->fuelLevel = fuelLevel;
    return;
 }
 

@@ -72,6 +72,7 @@ int getCommodities()
          std::cout << "refuel will only work if you have at lease one tritium in your cargo,\n"
                    << "please set that up and press enter when ready.\n";
          std::cin.ignore();
+         std::cin.ignore();
 
          return commodities;
       
@@ -80,6 +81,7 @@ int getCommodities()
       //if they do not want automatic refuel
       else if (tolower(option.at(0) == 'n'))
       {
+         std::cin.ignore();
          return 0;
       }
    }

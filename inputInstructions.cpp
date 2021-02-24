@@ -6,11 +6,16 @@
 
 #include "inputInstructions.h"
 #include "keyboard.h"
+#include <cstdlib>
 #include <iostream>
 
 
 void InputInstructions :: runInstructions()
 {
+    // exit if the carrier is done jumpng
+    if (jumpsCompleted >= sysList.getTotalJumps())
+        exit(0);
+    
    //make keyboard object to be able to run cmd
    Keyboard key;
 

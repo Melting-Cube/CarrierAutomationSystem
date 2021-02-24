@@ -6,6 +6,7 @@
 
 #include "updateListener.h"
 #include <iostream>
+#include <ostream>
 #include <unistd.h>
 #include <stdlib.h>
 #include "jsonParse.h"
@@ -42,28 +43,18 @@ void UpdateListener :: handleJournalEvent()
     jsonParse.readJson(&event);
 
     //look for a match that means something
-    if (event.get("event", false) == "CarrierJumpRequest")
+    if (event.get("event", "error").asString() == "CarrierJump")
     {
-        std::cout << "\njump request made "
-                  << event.get("Body", "\"oof, dis is fucked\"").asString()
-                  << std::endl;
+        std::cout << "New System:\t" << event.get("StarSystem", "M O N K E").asString() << std::endl;
+        sleep((rand() % 3 + 5) * 60);
+        inputInstructions.runInstructions();
         fuelInstructions.runInstructions();
     }
-    else if (event.get("event", false) == "CarrierJump")
+    else if (event.get("event", "error").asString() == "Loadout")
     {
-        event.get("StarSystem", "M O N K E").asString();
-        sleep(rand() % 3 + 5);
-        inputInstructions.runInstructions();
-    }
-    else if (event.get("event", false) == "CarrierStats")
-    {
-        fuelInstructions.setFuelLevel(event.get("FuelLevel", 1000).asInt());
-    }
-    else if (event.get("event", false) == "Loadout")
-    {
-        std::cout << event.get("CargoCapacity", 0).asInt();
         fuelInstructions.setCargoSize(event.get("CargoCapacity", 0).asInt());
         inputInstructions.runInstructions();
+        fuelInstructions.runInstructions();
     }
     
 

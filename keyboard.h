@@ -24,13 +24,13 @@ class Keyboard
     Keyboard()
     {
         x = xdo_new(0);
-        key_delay = 200000;
+        key_delay = 300000;
         window = search("Elite - Dangerous");
     }
     Keyboard(std::string window)
     {
         x = xdo_new(0);
-        key_delay = 200000;
+        key_delay = 300000;
         this->window = search(window);
     }
 
